@@ -35,8 +35,8 @@ const containerStyle = {
   justifyContent: "center",
   fontSize: FONT_SIZE,
   backgroundColor: Color.BACKGROUND,
-  height: 52,
   padding: "6px 14px",
+  height: 52,
 } as const;
 
 const imageStyle = {
@@ -108,7 +108,9 @@ export default async function handler(req: Request) {
           </span>
         ))}
       </div>
-    )
+    ), {
+        height: 52,
+      }
   );
 }
 
