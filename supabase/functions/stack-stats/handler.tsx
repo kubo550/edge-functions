@@ -9,21 +9,23 @@ enum Color {
   SILVER = "#999C9F",
   BRONZE = "#AB825F",
 }
+const FONT_SIZE = 16;
 
 const getBadgeStyle = (color: Color) => ({
-  width: 6,
-  height: 6,
+  width: 8,
+  height: 8,
   borderRadius: "50%",
   overflow: "hidden",
   marginRight: 2,
   backgroundColor: color,
+  marginTop: 1  ,
 });
 
 const getBadgeContainerStyle = (color: Color) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginLeft: 8,
+  marginLeft: 10,
   color: color,
 });
 
@@ -31,15 +33,15 @@ const containerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 12,
+  fontSize: FONT_SIZE,
   backgroundColor: Color.BACKGROUND,
   height: 52,
-  padding: "0 8px",
+  padding: "6px 14px",
 } as const;
 
 const imageStyle = {
-  width: 24,
-  height: 24,
+  width: 28,
+  height: 28,
   objectFit: "cover",
   marginRight: 8,
 } as const;
