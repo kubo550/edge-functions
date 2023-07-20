@@ -9,21 +9,23 @@ enum Color {
   SILVER = "#999C9F",
   BRONZE = "#AB825F",
 }
+const FONT_SIZE = 16;
 
 const getBadgeStyle = (color: Color) => ({
-  width: 6,
-  height: 6,
+  width: 8,
+  height: 8,
   borderRadius: "50%",
   overflow: "hidden",
   marginRight: 2,
   backgroundColor: color,
+  marginTop: 1  ,
 });
 
 const getBadgeContainerStyle = (color: Color) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginLeft: 8,
+  marginLeft: 10,
   color: color,
 });
 
@@ -31,17 +33,17 @@ const containerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 12,
+  fontSize: FONT_SIZE,
   backgroundColor: Color.BACKGROUND,
   height: 52,
-  padding: "0 8px",
+  padding: "6px 14px",
 } as const;
 
 const imageStyle = {
-  width: 24,
-  height: 24,
+  width: 28,
+  height: 28,
   objectFit: "cover",
-  marginRight: 8,
+  marginRight: 10,
 } as const;
 
 export default async function handler(req: Request) {
@@ -83,6 +85,13 @@ export default async function handler(req: Request) {
     },
   ].filter(badge => badge.count > 0);
 
+  function formatNumber(num: number):string {
+    if (num < 1000) return num.toString();
+    if (num < 10000) return (num / 1000).toString().replace(".", ",");
+    if (num < 1000000) return (num / 1000).toFixed(0) + "k";
+    return (num / 1000000).toFixed(0) + "m";
+  }
+
   return new ImageResponse(
     (
       <div style={containerStyle}>
@@ -90,12 +99,12 @@ export default async function handler(req: Request) {
           <img src={profile_image} alt='profile' style={imageStyle} />
         )}
 
-        <span style={{ color: Color.TEXT }}>{reputation}</span>
+        <span style={{ color: Color.TEXT }}>{formatNumber(reputation)}</span>
 
         {badges.map(badge => (
           <span style={getBadgeContainerStyle(badge.color)}>
             <span style={getBadgeStyle(badge.color)} />
-            {badge.count}
+            {formatNumber(badge.count)}
           </span>
         ))}
       </div>
