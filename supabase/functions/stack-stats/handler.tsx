@@ -53,6 +53,8 @@ export default async function handler(req: Request) {
   }
 
   const id = new URL(req.url).searchParams.get("id");
+  const withImage = new URL(req.url).searchParams.get("withImage");
+
   const { data } = await axiod.get(
     `https://api.stackexchange.com/2.3/users/${id}?order=desc&sort=reputation&site=stackoverflow`
   );
@@ -84,7 +86,9 @@ export default async function handler(req: Request) {
   return new ImageResponse(
     (
       <div style={containerStyle}>
-        <img src={profile_image} alt='profile' style={imageStyle} />
+        {withImage === "true" && (
+          <img src={profile_image} alt='profile' style={imageStyle} />
+        )}
 
         <span style={{ color: Color.TEXT }}>{reputation}</span>
 
