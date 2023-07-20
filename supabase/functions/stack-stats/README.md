@@ -19,7 +19,6 @@
 <!-- HERE YOU GO!  -->
 
 <img src="https://rmynaenogexxzwoqmswd.supabase.co/functions/v1/stack-stats?id=14513625&withImage=true" alt="stack stats" />&nbsp;
-<img src="https://rmynaenogexxzwoqmswd.supabase.co/functions/v1/stack-stats?id=14513625&withImage=false" alt="stack stats" />&nbsp;
 <img src="https://rmynaenogexxzwoqmswd.supabase.co/functions/v1/stack-stats?id=7856&withImage=true" alt="stack stats" />&nbsp;
 <img src="https://rmynaenogexxzwoqmswd.supabase.co/functions/v1/stack-stats?id=21319038&withImage=true" alt="stack stats" />&nbsp;
 
