@@ -46,8 +46,18 @@ const imageStyle = {
   marginRight: 10,
 } as const;
 
+
+function formatNumber(num: number):string {
+  if (num < 1000) return num.toString();
+  if (num < 10000) return (num / 1000).toString().replace(".", ",");
+  if (num < 1000000) return (num / 1000).toFixed(0) + "k";
+  return (num / 1000000).toFixed(0) + "m";
+}
 export default async function handler(req: Request) {
+  console.log('Got request')
+
   if (req.method !== "GET") {
+    console.log('Invalid method')
     return new Response(
       JSON.stringify({ error: "Only GET requests are accepted" }),
       { headers: { "Content-Type": "application/json" } }
@@ -61,6 +71,7 @@ export default async function handler(req: Request) {
     `https://api.stackexchange.com/2.3/users/${id}?order=desc&sort=reputation&site=stackoverflow`
   );
 
+
   if (data.items.length === 0) {
     return new Response(
       JSON.stringify({ error: `User with id ${id} not found` }),
@@ -68,6 +79,7 @@ export default async function handler(req: Request) {
     );
   }
 
+  console.log('Got data for user', { id })
   const { reputation, profile_image, badge_counts } = data.items[0];
 
   const badges = [
@@ -84,13 +96,6 @@ export default async function handler(req: Request) {
       count: badge_counts.bronze,
     },
   ].filter(badge => badge.count > 0);
-
-  function formatNumber(num: number):string {
-    if (num < 1000) return num.toString();
-    if (num < 10000) return (num / 1000).toString().replace(".", ",");
-    if (num < 1000000) return (num / 1000).toFixed(0) + "k";
-    return (num / 1000000).toFixed(0) + "m";
-  }
 
   return new ImageResponse(
     (
