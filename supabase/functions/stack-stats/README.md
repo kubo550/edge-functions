@@ -64,6 +64,5 @@ Also, you can wrap the above in an anchor tag to make it easier to move on to yo
 * supabase step functions
 * deno
 * typescript
-* 
 
 
