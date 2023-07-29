@@ -23,10 +23,6 @@
 <img src="https://rmynaenogexxzwoqmswd.supabase.co/functions/v1/stack-stats?id=21319038&withImage=true" alt="stack stats" />&nbsp;
 
 
-
-
-Temporary not working
-
 ## How do I use it?
 
 The only thing you need to do is to add the following code to your page:
