@@ -1,7 +1,8 @@
 import {serve} from "https://deno.land/std@0.168.0/http/server.ts"
 import z from 'https://esm.sh/zod'
-import {getResponse, toPhrase} from "../utils/index.ts";
-import {deepl} from "../utils/deepl-client.ts";
+import {getResponse, toPhrase} from "../_shared/utils/index.ts";
+import {deepl} from "../_shared/infrastructure/deepl-client.ts";
+import {corsHeaders} from "../_shared/cors.ts";
 
 
 const schema = z.object({
@@ -14,6 +15,10 @@ const schema = z.object({
 });
 
 serve(async (req) => {
+    if (req.method === 'OPTIONS') {
+        return new Response('ok', { headers: corsHeaders })
+    }
+
     const {phrases, targetLang = 'PL'} = await req.json() as {
         phrases: { id?: string, phrase: string }[],
         targetLang: string

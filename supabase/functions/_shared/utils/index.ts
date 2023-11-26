@@ -1,9 +1,15 @@
-import {Phrase} from "../types/index.ts";
+import {Phrase} from "../../types/index.ts";
+import {corsHeaders} from "../cors.ts";
 
 export function getResponse(response: Record<string, any>) {
     return new Response(
         JSON.stringify(response),
-        {headers: {"Content-Type": "application/json"}},
+        {
+            headers: {
+                "Content-Type": "application/json",
+                ...corsHeaders
+            }
+        },
     );
 }
 

@@ -1,15 +1,19 @@
 import {serve} from "https://deno.land/std@0.168.0/http/server.ts"
 import z from 'https://esm.sh/zod'
-import {gpt} from "../utils/gpt-client.ts";
-import {getResponse, splitTextIntoPhrases} from "../utils/index.ts";
+import {gpt} from "../_shared/infrastructure/gpt-client.ts";
+import {getResponse, splitTextIntoPhrases} from "../_shared/utils/index.ts";
+import {corsHeaders} from "../_shared/cors.ts";
 
 const schema = z.object({
     enabledGPT: z.boolean().optional(),
-    text: z.string().min(1).max(2048),
+    text: z.string().min(1).max(10_000),
 })
 
 
 serve(async (req) => {
+    if (req.method === 'OPTIONS') {
+        return new Response('ok', { headers: corsHeaders })
+    }
     const {text, enabledGPT = false} = await req.json()
     try {
         schema.parse({text})
