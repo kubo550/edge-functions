@@ -1,25 +1,43 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import {serve} from "https://deno.land/std@0.168.0/http/server.ts"
 
-import { OpenAI } from "https://deno.land/x/openai/mod.ts";
+import {OpenAI} from "https://deno.land/x/openai/mod.ts";
 
 const openaiapikey = Deno.env.get('OPENAI_API_KEY');
 const openAI = new OpenAI(openaiapikey!);
 
 
-
 serve(async (req) => {
-  const completion = await openAI.createCompletion({
-    model: "davinci",
-    prompt: "The meaning of life is",
-  });
 
-  console.log(completion.choices);
+    const {prompt} = await req.json()
 
-  const data = completion.choices ? completion.choices[0] : { message: "Hello from Functions!" }
-  return new Response(
-    JSON.stringify(data),
-    { headers: { "Content-Type": "application/json" } },
-  )
+    console.log('Generating image for prompt: ', prompt)
+
+    if (!prompt) {
+        return new Response(
+            JSON.stringify({error: 'Prompt is required'}),
+            {headers: {"Content-Type": "application/json"}},
+        )
+    }
+
+    if (prompt.length > 2048) {
+        return new Response(
+            JSON.stringify({error: 'Prompt is too long. Maximum length is 2048 characters.'}),
+            {headers: {"Content-Type": "application/json"}},
+        )
+    }
+    const openAiResponse = await openAI.createImage({
+        prompt,
+        n: 1,
+        size: "1024x1024",
+    });
+
+    const imageUlr = openAiResponse.data[0].url;
+
+    console.log('Image has been generated! ', imageUlr)
+    return new Response(
+        JSON.stringify({imageUlr}),
+        {headers: {"Content-Type": "application/json"}},
+    )
 })
 
 // To invoke:
