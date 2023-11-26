@@ -25,7 +25,8 @@ export function uniqId() {
 export function splitTextIntoPhrases(text: string): Phrase[] {
     const ignoredWords = new Set([
         "and", "so", "the", "then", "an", "by", "it", "only", "about", "when",
-        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "of", "no", "is"
+        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "of", "no", "is",
+        "we", "are", "our", "to", "this", "that", "at", "be", "can", "or", "on"
     ]);
     const words = text.toLowerCase().replace(/[^a-z0-9-\s]/g, '').split(' ');
     const phrases: Phrase[] = [];
