@@ -18,8 +18,18 @@ interface SetTable {
     createdAt?: string
 }
 
+interface PhraseTable {
+    id?: number
+    setId: string
+    phrase: string
+    meaning: string
+    lang?: string
+    meaningLang?: string
+
+}
 interface Database {
-    sets: SetTable
+    sets: SetTable;
+    phrases: PhraseTable;
 }
 
 export const db = new Kysely<Database>({

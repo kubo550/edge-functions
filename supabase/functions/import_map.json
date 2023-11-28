@@ -1,5 +1,6 @@
 {
   "imports": {
-    "lodash": "https://cdn.skypack.dev/lodash"
+    "lodash": "https://cdn.skypack.dev/lodash",
+    "kysely": "https://esm.sh/kysely@0.23.4"
   }
 }

@@ -3,7 +3,7 @@ import z from 'https://esm.sh/zod'
 import {getResponse, toPhrase} from "../_shared/utils/index.ts";
 import {deepl} from "../_shared/infrastructure/deepl-client.ts";
 import {corsHeaders} from "../_shared/cors.ts";
-import _ from 'lodash'
+import _ from 'https://cdn.skypack.dev/lodash'
 import {Phrase} from "../types/index.ts";
 
 const schema = z.object({
@@ -12,18 +12,17 @@ const schema = z.object({
         id: z.string().optional(),
         phrase: z.string().max(100),
     })).max(100),
-
 });
 
+type TranslateBody = {
+    phrases: { id?: string, phrase: string }[],
+    targetLang: string
+};
 serve(async (req) => {
     if (req.method === 'OPTIONS') {
         return new Response('ok', { headers: corsHeaders })
     }
-
-    const {phrases, targetLang = 'PL'} = await req.json() as {
-        phrases: { id?: string, phrase: string }[],
-        targetLang: string
-    }
+    const {phrases, targetLang = 'PL'} = await req.json() as TranslateBody
     console.log('translate - get phrases to translate', {phrases: phrases.length})
     try {
         schema.parse({phrases})
