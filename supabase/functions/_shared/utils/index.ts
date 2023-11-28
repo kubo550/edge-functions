@@ -3,7 +3,7 @@ import {corsHeaders} from "../cors.ts";
 
 export function getResponse(response: Record<string, any>) {
     return new Response(
-        JSON.stringify(response),
+        JSON.stringify(response, (key, value) => (typeof value === 'bigint' ? value.toString() : value)),
         {
             headers: {
                 "Content-Type": "application/json",
@@ -33,8 +33,10 @@ export function splitTextIntoPhrases(text: string): Phrase[] {
         "same", "very", "just", "too", "now", "also", "than", "more", "some", "any", "all", "most", "much",
         "many", "few", "each", "both", "own", "between", "through", "during", "before", "after", "above",
         "below", "under", "until", "while", "against", "through", "over", "between", "throughout", "without",
+        "must", "her", "you", "it's", "it", "he", "she", "him", "his", "hers", "they", "them", "their", "theirs",
+        "whats"
     ]);
-    const words = text.toLowerCase().replace(/[^a-z0-9-\s]/g, '').split(' ');
+    const words = text.toLowerCase().replace(/[^a-z-'\s]/g, '').split(' ');
     const phrases: Phrase[] = [];
     let currentPhrase = '';
 
@@ -53,4 +55,8 @@ export function splitTextIntoPhrases(text: string): Phrase[] {
     if (currentPhrase) phrases.push(toPhrase({phrase: currentPhrase}));
 
     return phrases;
+}
+
+export function bigIntToNumber(bigInt: number) {
+    return Number(bigInt.toString())
 }

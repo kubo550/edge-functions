@@ -3,7 +3,8 @@ import z from 'https://esm.sh/zod'
 import {getResponse, toPhrase} from "../_shared/utils/index.ts";
 import {deepl} from "../_shared/infrastructure/deepl-client.ts";
 import {corsHeaders} from "../_shared/cors.ts";
-
+import _ from 'lodash'
+import {Phrase} from "../types/index.ts";
 
 const schema = z.object({
     targetLang: z.string().optional(),
@@ -30,12 +31,12 @@ serve(async (req) => {
         return getResponse((error as z.ZodError)?.issues)
     }
 
-    const text = phrases.map(({phrase}) => phrase).join('; ')
+    const uniquePhrases = _.uniqBy(_.map(_.compact(phrases), (p: Phrase) => p.phrase?.trim()?.toLowerCase(), 'phrase'));
 
     try {
-        const translatedText = await deepl.translate({text, targetLang})
+        const translatedText = await deepl.translate({text: uniquePhrases.join('; '), targetLang})
         const translatedPhrases = translatedText.split('; ').map((meaning, index) =>
-            toPhrase({phrase: phrases[index].phrase, meaning, id: phrases[index].id})
+            toPhrase({phrase: uniquePhrases[index], meaning})
         )
         console.log('translate - translated phrases', {translatedPhrases: translatedPhrases.length})
         return getResponse({response: translatedPhrases})
