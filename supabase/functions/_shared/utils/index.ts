@@ -35,8 +35,7 @@ export function uniqId() {
 
 
 export function splitTextIntoPhrases(text: string): Phrase[] {
-    const words = text.toLowerCase().replace(/[^a-z-;'\s]/g, '').split(/\s+/);
-    console.log('words', words)
+    const words = text.toLowerCase().replace(/[^a-z-;'\s]/g, '').split(/\s+/).filter(Boolean);
     const phrases: Phrase[] = [];
     let currentPhrase = '';
 
