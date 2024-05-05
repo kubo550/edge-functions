@@ -35,7 +35,7 @@ export function uniqId() {
 
 
 export function splitTextIntoPhrases(text: string): Phrase[] {
-    const words = text.toLowerCase().replace(/[^a-z-;'\s]/g, '').split(/\s+/).filter(Boolean);
+    const words = text.toLowerCase().replace(/[^a-zа-я-;'\s]/g, '').split(/\s+/).filter(Boolean);
     const phrases: Phrase[] = [];
     let currentPhrase = '';
 
@@ -45,10 +45,9 @@ export function splitTextIntoPhrases(text: string): Phrase[] {
                 phrases.push(toPhrase({phrase: currentPhrase}));
                 currentPhrase = '';
             }
-            phrases.push(toPhrase({phrase: word.replace(/;/g, '')}));
+            phrases.push(toPhrase({phrase: word}));
             return;
-        } else
-        if (!ignoredWords.has(word.toLowerCase())) {
+        } else if (!ignoredWords.has(word.toLowerCase())) {
             if (currentPhrase) currentPhrase += ' ';
             currentPhrase += word;
         } else {
@@ -61,12 +60,12 @@ export function splitTextIntoPhrases(text: string): Phrase[] {
 
     if (currentPhrase) phrases.push(toPhrase({phrase: currentPhrase}));
 
-    return phrases;
+    return phrases.map(w => ({...w, phrase: w.phrase?.replace(/;/g, '')})).filter(w => w.phrase && w.phrase.length > 1);
 }
 
 
 const ignoredWords = new Set([
-    ";","and", "so", "the", "then", "an", "by", "it", "only", "about", "when",
+    ";", "and", "so", "the", "then", "an", "by", "it", "only", "about", "when",
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "of", "no", "is",
     "we", "are", "our", "to", "this", "that", "at", "be", "can", "or", "on", "a", "but", "in", "for",
     "with", "from", "as", "not", "if", "was", "were", "had", "has", "have", "will", "would", "could",
